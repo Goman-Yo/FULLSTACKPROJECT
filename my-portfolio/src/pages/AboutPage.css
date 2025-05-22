@@ -1,0 +1,197 @@
+/* src/pages/AboutPage.css */
+
+.about-page {
+    width: 100%;
+    line-height: 1.7; /* Improved readability for text-heavy page */
+  }
+  
+  /* General styles for all sections on this page for consistency */
+  .page-section {
+    padding: 70px 20px;
+  }
+  
+  .page-section .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .page-section h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #2c3e50; /* Default heading color for light sections */
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .page-section h2::after { /* Underline accent for section titles */
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #3498db; /* Primary color */
+    margin: 15px auto 0;
+  }
+  
+  /* Section 1: About Intro Section (Light) */
+  .about-intro-section {
+    background-color: #ffffff; /* Or #f4f7f6 if you prefer from homepage hero */
+  }
+  
+  .about-intro-section .intro-text {
+    font-size: 1.15em;
+    color: #34495e;
+    max-width: 900px; /* Content width for readability */
+    margin: 0 auto; /* Center the text block */
+    text-align: justify; /* Or left, justify can sometimes look odd */
+  }
+  
+  /* Section 2: Education & Experience Section (Dark) */
+  .education-experience-section {
+    background-color: #2c3e50; /* Dark background */
+    color: #f8f9fa; /* Light text on dark background */
+  }
+  
+  .education-experience-section h2,
+  .education-experience-section h3 {
+    color: #ffffff; /* White headings on dark background */
+  }
+  
+  .education-experience-section h2::after {
+    background-color: #3498db; /* Accent color stands out */
+  }
+  
+  .ed-ex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    gap: 40px;
+  }
+  
+  .education-card,
+  .experience-card {
+    background-color: #34495e; /* Slightly lighter dark for cards */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  .education-card h3,
+  .experience-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db; /* Accent underline for card titles */
+    padding-bottom: 10px;
+    display: inline-block; /* So border-bottom only spans the text */
+  }
+  
+  .education-card .university-name,
+  .experience-card .company-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #ecf0f1; /* Lighter text */
+    margin-bottom: 5px;
+  }
+  
+  .education-card .graduation-date,
+  .experience-card .duration {
+    font-size: 0.9em;
+    color: #bdc3c7; /* Muted text for dates/duration */
+    margin-bottom: 15px;
+    font-style: italic;
+  }
+  
+  .education-card ul,
+  .experience-card ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0;
+  }
+  
+  .education-card ul li,
+  .experience-card ul li {
+    margin-bottom: 10px;
+    padding-left: 20px; /* Space for custom bullet */
+    position: relative;
+    color: #bdc3c7; /* Lighter text for list items */
+  }
+  
+  /* Custom bullet points */
+  .education-card ul li::before,
+  .experience-card ul li::before {
+    content: '✓'; /* Checkmark or use '•' or '→' */
+    color: #3498db; /* Primary color for bullet */
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+  }
+  
+  /* Section 3: Skillset Section (Light) */
+  .skillset-section {
+    background-color: #ffffff;
+  }
+  
+  .skillset-section .coming-soon-text {
+    font-size: 1.1em;
+    color: #555;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* --- Styles for Skillset Section --- */
+.skillset-section {
+    background-color: #ffffff; /* Light background */
+  }
+  
+  .skillset-section h2 {
+    color: #2c3e50; /* Dark heading on light background */
+  }
+  
+  .skillset-section h2::after {
+    background-color: #3498db; /* Primary color for underline */
+  }
+  
+  .skills-container {
+    display: flex;
+    flex-direction: column; /* Categories stack vertically */
+    gap: 40px; /* Space between category sections */
+  }
+  
+  .skill-category {
+     background-color: #34495e; 
+     padding: 20px; 
+     border-radius: 8px; 
+  }
+  
+  .skill-category h3 {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: #ffffff; /* Sub-heading color */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Subtle separator for category title */
+    text-align: left; /* Align category titles to the left */
+  }
+  
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow skill tags to wrap to the next line */
+    gap: 12px; /* Space between skill tags */
+    justify-content: flex-start; /* Align tags to the left */
+  }
+  
+  .skill-tag {
+    background-color: #e9ecef; /* Light gray background for tags */
+    color: #495057; /* Darker text for tags */
+    padding: 8px 18px; /* Padding inside the tag */
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.95em;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+  }
+  
+  .skill-tag:hover {
+    background-color: #3498db; /* Primary color on hover */
+    color: #ffffff; /* White text on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Enhanced shadow */
+  }

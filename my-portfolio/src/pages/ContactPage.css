@@ -1,0 +1,190 @@
+/* src/pages/ContactPage.css */
+
+.contact-page {
+    background-color: #ffffff; /* Light background for the contact page */
+    /* Uses .page-section for consistent padding from AboutPage.css, or define here: */
+    /* padding: 70px 20px; */
+  }
+  
+  .contact-page .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .contact-page-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .contact-page-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #3498db;
+    margin: 15px auto 0;
+  }
+  
+  .contact-intro {
+    font-size: 1.15em;
+    color: #34495e;
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+    line-height: 1.7;
+  }
+  
+  .contact-content-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 40px; /* Space between form and direct contact section */
+    align-items: flex-start; /* Align items to the top */
+  }
+  
+  .contact-form-container {
+    flex: 2; /* Form takes more space */
+    min-width: 300px; /* Minimum width before wrapping */
+    background-color: #34495e; /* Slightly off-white background for form area */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  
+  .direct-contact-container {
+    flex: 1; /* Direct contact takes less space */
+    min-width: 280px;
+    background-color: #34495e;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  
+  .contact-form-container h3,
+  .direct-contact-container h3 {
+    font-size: 1.6em;
+    color: #ffffff;
+    margin-top: 0;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  .contact-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.95em;
+    text-align: left;
+  }
+  
+  .contact-form input[type="text"],
+  .contact-form input[type="email"],
+  .contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box; /* Important for width and padding */
+    font-size: 1em;
+    color: #495057;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .contact-form input[type="text"]:focus,
+  .contact-form input[type="email"]:focus,
+  .contact-form textarea:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    outline: none;
+  }
+  
+  .contact-form textarea {
+    resize: vertical; /* Allow vertical resizing, not horizontal */
+    min-height: 120px;
+  }
+  
+  .form-submit-button {
+    /* Using .cta-button.primary styles from HomePage.css, but can customize here */
+    padding: 12px 30px; /* Make it a bit more prominent */
+    font-size: 1.1em;
+    cursor: pointer;
+  }
+  /* Ensure .cta-button.primary from previous CSS is available or define here: */
+  .cta-button.primary {
+    background-color: #ffffff;
+    color: #34495e;
+    border: 2px solid #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+  }
+  .cta-button.primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+  }
+  
+  
+  /* Styles for direct contact icon links */
+  .contact-links-grid {
+    display: flex;
+    flex-direction: column; /* Stack them vertically for now */
+    gap: 20px; /* Space between icon links */
+  }
+  
+  .contact-icon-link {
+    display: flex; /* Align icon circle and label horizontally */
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff; /* Default text color for the label */
+    transition: color 0.3s ease;
+  }
+  
+  .contact-icon-link:hover .contact-icon-label {
+    color: #3498db; /* Primary color on hover for label */
+  }
+  .contact-icon-link:hover .contact-icon-circle {
+    background-color: #3498db; /* Primary color on hover for circle */
+    color: #ffffff; /* White text/initials on hover */
+    transform: scale(1.1); /* Slightly enlarge circle on hover */
+  }
+  
+  .contact-icon-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Make it a circle */
+    background-color: #e9ecef; /* Light gray background for circle */
+    color: #495057; /* Text color for initials */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1em; /* Size for initials LI, GH, EM */
+    margin-right: 15px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .contact-icon-label {
+    font-size: 1.1em;
+    font-weight: 500;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .contact-content-wrapper {
+      flex-direction: column; /* Stack form and direct contact on small screens */
+    }
+    .direct-contact-container {
+      margin-top: 30px; /* Add some space when stacked */
+    }
+  }

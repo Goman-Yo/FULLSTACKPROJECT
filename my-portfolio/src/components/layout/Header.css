@@ -1,0 +1,87 @@
+/* src/components/layout/Header.css */
+
+.site-header {
+    background-color: #2c3e50; /* Clean white background */
+    padding: 0 20px; /* Padding on the sides */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow for depth */
+    position: fixed; /* Makes the header stick to the top on scroll */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensures it's above other content */
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between; /* Puts site title on left, nav on right */
+    align-items: center;
+    max-width: 1300px; /* Max width for content within header, can match page content width */
+    margin: 0 auto; /* Center the container */
+    height: 70px; /* Define a fixed height for the header */
+  }
+  
+  .site-title a {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #ffffff; /* Dark, professional color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .site-title a:hover {
+    color: #3498db; /* Primary blue on hover */
+  }
+  
+  .main-navigation ul {
+    list-style: none; /* Remove default bullet points */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Align nav items in a row */
+  }
+  
+  .main-navigation li {
+    margin-left: 25px; /* Space between nav items */
+  }
+  
+  .main-navigation .nav-link {
+    text-decoration: none;
+    color: #ffffff; /* Slightly muted color for nav links */
+    font-size: 1em;
+    font-weight: 500;
+    padding: 10px 5px; /* Add some padding for easier clicking */
+    position: relative; /* For the underline effect */
+    transition: color 0.3s ease;
+  }
+  
+  .main-navigation .nav-link:hover {
+    color: #3498db; /* Primary blue on hover */
+  }
+  
+  /* Style for the active link and its underline effect */
+  .main-navigation .nav-link.active {
+    color: #3498db; /* Primary blue for active link */
+    font-weight: 700; /* Make active link bolder */
+  }
+  
+  .main-navigation .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; /* Position underline at the bottom of the link's padding box */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3498db;
+    transform: scaleX(0); /* Start with underline hidden */
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+  
+  .main-navigation .nav-link:hover::after,
+  .main-navigation .nav-link.active::after {
+    transform: scaleX(1); /* Show underline on hover/active */
+    transform-origin: bottom left;
+  }
+  
+  /* Responsive adjustments for header can be added later if needed */
+  /* e.g. @media (max-width: 768px) { ... } for a hamburger menu */

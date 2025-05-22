@@ -1,0 +1,42 @@
+/* src/components/layout/Footer.css */
+
+.site-footer-main {
+    background-color: #2c3e50; /* Dark background, same as header */
+    color: #bdc3c7; /* Light gray text for good contrast */
+    padding: 40px 20px; /* Decent padding */
+    text-align: center; /* Center all content by default */
+    border-top: 3px solid #3498db; /* Accent line matching primary color */
+  }
+  
+  .footer-content {
+    max-width: 1100px; /* Max width for content, consistent with other sections */
+    margin: 0 auto; /* Center the content block */
+  }
+  
+  .social-links-container {
+    margin-bottom: 20px;
+  }
+  
+  .social-links-container .social-link {
+    color: #ecf0f1; /* Lighter color for social links for emphasis */
+    text-decoration: none;
+    margin: 0 12px; /* Space out the links */
+    font-size: 1.1em; /* Slightly larger social links */
+    transition: color 0.3s ease;
+  }
+  
+  .social-links-container .social-link:hover {
+    color: #3498db; /* Primary color on hover */
+  }
+  
+  .copyright-text {
+    font-size: 0.9em;
+    margin: 0; /* Remove default paragraph margin */
+  }
+  
+  .footer-credit { /* Optional class for a "made with" line */
+    font-size: 0.8em;
+    margin-top: 10px;
+    font-style: italic;
+    color: #7f8c8d; /* More muted for a credit line */
+  }

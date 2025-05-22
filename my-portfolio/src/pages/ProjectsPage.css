@@ -1,0 +1,183 @@
+/* src/pages/ProjectsPage.css */
+
+.projects-page {
+    background-color: #ffffff; /* Light background for the projects page */
+    /* Uses .page-section for consistent padding from AboutPage.css, or define here: */
+    /* padding: 70px 20px; */
+  }
+  
+  .projects-page .container { /* Assuming .container class for max-width and centering */
+    max-width: 1200px; /* Wider for project grid */
+    margin: 0 auto;
+  }
+  
+  .projects-page-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .projects-page-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #3498db;
+    margin: 15px auto 0;
+  }
+  
+  .projects-intro {
+    font-size: 1.15em;
+    color: #34495e;
+    max-width: 800px;
+    margin: 0 auto 50px auto; /* Center the intro text */
+    text-align: center;
+    line-height: 1.7;
+  }
+  
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Responsive cards */
+    gap: 35px;
+  }
+  
+  .project-card {
+    background-color: #34495e;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Softer, more spread shadow */
+    overflow: hidden; /* Ensure content stays within rounded corners */
+    display: flex;
+    flex-direction: column; /* Stack image, content, links vertically */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  .project-card-image-container {
+    width: 100%;
+    height: 220px; /* Fixed height for image container */
+    background-color: #e9ecef; /* Placeholder bg */
+    overflow: hidden; /* In case image is larger */
+  }
+  
+  .project-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area, might crop */
+    display: block;
+  }
+  .project-card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-style: italic;
+  }
+  
+  .project-card-content {
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow content to take available space, pushing links down */
+  }
+  
+  .project-card-content h3 {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  
+  .project-card-description {
+    font-size: 0.95em;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Description takes up space before technologies and links */
+  }
+  
+  .project-card-technologies {
+    margin-bottom: 20px;
+  }
+  
+  .project-card-technologies strong {
+    font-size: 0.9em;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  
+  .project-card-technologies ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Use gap for spacing between tags */
+  }
+  
+  .project-card-technologies li {
+    background-color: #e0e7ef; /* Lighter blue-gray */
+    color: #34495e; /* Darker text */
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  
+  .project-card-links {
+    margin-top: auto; /* Push links to the bottom of the card content area */
+    padding-top: 15px; /* Space above links */
+    border-top: 1px solid #e9ecef; /* Subtle separator line */
+    display: flex;
+    gap: 10px; /* Space between buttons if both are present */
+  }
+  
+  .project-card-links .project-link {
+    /* Using cta-button styles from HomePage.css, but we can customize */
+    padding: 8px 18px;
+    font-size: 0.9em;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .project-card-links .project-link.primary { /* Assuming cta-button.primary styling */
+    background-color: #3498db;
+    color: white;
+    border: 2px solid #3498db;
+  }
+  .project-card-links .project-link.primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+  }
+  
+  .project-card-links .project-link.secondary { /* Assuming cta-button.secondary styling */
+    background-color: transparent;
+    color: #3498db;
+    border: 2px solid #3498db;
+  }
+  .project-card-links .project-link.secondary:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .no-links-message {
+      font-size: 0.85em;
+      font-style: italic;
+      color: #6c757d;
+      margin-top: 10px; /* Spacing if it's the only thing in .project-card-links */
+  }

@@ -1,0 +1,369 @@
+/* src/pages/HomePage.css */
+
+.home-page {
+    width: 100%;
+  }
+  
+  .hero-section {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Vertically align items */
+    justify-content: space-around; /* Space out content and image */
+    padding: 60px 20px; /* Add some padding */
+    min-height: 80vh; /* Make it take up a good portion of the viewport height */
+    background-color: #f4f7f6; /* A light, modern background color */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  }
+  
+  .hero-content {
+    flex: 1; /* Allow content to take available space */
+    max-width: 600px; /* Max width for readability */
+    margin-right: 20px; /* Space between text and image */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .hero-content h1 {
+    font-size: 2.8em; /* Larger font size for the main headline */
+    font-weight: 700;
+    color: #2c3e50; /* A dark, professional color */
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .hero-content .sub-headline {
+    font-size: 1.2em;
+    color: #34495e; /* Slightly lighter than the headline */
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+  
+  .hero-cta-buttons .cta-button {
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 15px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block; /* Allow margin and padding */
+    margin-bottom: 10px; /* For stacking on small screens */
+  }
+  
+  .hero-cta-buttons .cta-button.primary {
+    background-color: #3498db; /* A modern blue */
+    color: white;
+    border: 2px solid #3498db;
+  }
+  
+  .hero-cta-buttons .cta-button.primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+  }
+  
+  .hero-cta-buttons .cta-button.secondary {
+    background-color: transparent;
+    color: #3498db;
+    border: 2px solid #3498db;
+  }
+  
+  .hero-cta-buttons .cta-button.secondary:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .hero-image-container {
+    flex: 1;
+    max-width: 400px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* If using the placeholder div for the image */
+  .hero-image-container .image-placeholder {
+    width: 300px; /* Adjust as needed */
+    height: 300px; /* Adjust as needed */
+    background-color: #bdc3c7; /* Placeholder color */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5em;
+    border-radius: 50%; /* Make it circular - a common style for profile pics */
+    /* Or use a square/rectangle: border-radius: 10px; */
+  }
+  
+  /* If using an actual image */
+  .hero-image-container .profile-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 50%; /* Circular image */
+    /* Or for a rounded square: border-radius: 10px; */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  /* Basic Responsive adjustments */
+  @media (max-width: 768px) {
+    .hero-section {
+      flex-direction: column; /* Stack content and image vertically */
+      text-align: center; /* Center text for smaller screens */
+    }
+  
+    .hero-content {
+      margin-right: 0;
+      margin-bottom: 30px;
+      text-align: center; /* Ensure text content is also centered */
+    }
+  
+    .hero-content h1 {
+      font-size: 2.2em;
+    }
+  
+    .hero-content .sub-headline {
+      font-size: 1em;
+    }
+  
+    .hero-image-container {
+      max-width: 80%; /* Allow image placeholder to be responsive */
+    }
+  
+    .hero-cta-buttons .cta-button {
+      margin-right: 10px; /* Adjust margin for stacked buttons */
+      margin-left: 10px;
+    }
+  }
+
+/* --- MODIFIED Key Skills Section Styles --- */
+.key-skills-section {
+  padding: 80px 20px; /* Increased padding a bit */
+  text-align: center;
+  background-color: #2c3e50; /* Dark background for this section */
+  color: #f8f9fa; /* Light text color for content directly in this section */
+}
+
+.key-skills-section h2 {
+  font-size: 2.4em; /* Slightly larger */
+  font-weight: 700;
+  color: #ffffff; /* White heading on dark background */
+  margin-bottom: 60px; /* Increased margin */
+  position: relative;
+}
+
+.key-skills-section h2::after {
+  content: '';
+  display: block;
+  width: 100px; /* Wider underline */
+  height: 4px;
+  background-color: #3498db; /* Primary blue - stands out on dark */
+  margin: 20px auto 0; 
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 35px; /* Slightly increased gap */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.skill-card {
+  background-color: #ffffff; /* White card background to pop on dark section */
+  padding: 35px 30px; /* Increased padding */
+  border-radius: 10px; /* Slightly more rounded */
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); /* Refined shadow */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.4s ease; /* Slightly slower shadow transition */
+  border: 1px solid #e0e0e0; /* Subtle border for card definition */
+}
+
+.skill-card:hover {
+  transform: translateY(-10px); /* More pronounced lift */
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.skill-icon {
+  color: #3498db; /* Primary blue for icons */
+  /* SVG is already sized, margin-bottom set in its component style */
+}
+
+.skill-card h3 {
+  font-size: 1.6em; /* Slightly larger */
+  font-weight: 600;
+  color: #2c3e50; /* Dark text for card title (contrast with white card bg) */
+  margin-bottom: 15px;
+}
+
+.skill-card p {
+  font-size: 1em; /* Slightly larger */
+  color: #495057; /* Medium gray for card description */
+  line-height: 1.7;
+}
+
+/* --- Featured Project Section Styles --- */
+.featured-project-section {
+  padding: 80px 20px;
+  background-color: #f4f7f6; /* Light background for the overall section */
+}
+
+.featured-project-section h2 {
+  font-size: 2.4em;
+  font-weight: 700;
+  color: #2c3e50; 
+  margin-bottom: 60px;
+  position: relative;
+  text-align: center; /* Center the section heading */
+}
+
+.featured-project-section h2::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 4px;
+  background-color: #3498db;
+  margin: 20px auto 0;
+}
+
+.project-showcase {
+  display: flex;
+  max-width: 1100px; /* Can be wider if desired */
+  margin: 0 auto;
+  background-color: #ffffff; /* Overall card for showcase still white or transparent */
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* A bit more pronounced shadow for the whole showcase */
+  overflow: hidden;
+  flex-wrap: wrap; /* For responsiveness */
+}
+
+.project-image-container {
+  flex: 1 1 45%; /* Give slightly more or equal space to image */
+  min-width: 300px; 
+  background-color: #e0e0e0; /* Lighter placeholder for image area */
+}
+
+.project-image-container .project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-top-left-radius: 10px; /* If image is first, round its corner */
+  border-bottom-left-radius: 10px; /* If image is first, round its corner */
+}
+/* If details come first on mobile, these rounded corners need to be adjusted by media query */
+
+.project-image-container .project-image-placeholder {
+  width: 100%;
+  height: 100%; /* Make placeholder take full height of its container */
+  min-height: 350px; /* Ensure a decent height for placeholder */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cacfd6;
+  color: white;
+  font-size: 1.5em;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+/* This is the "box" with the dark background */
+.project-details {
+  flex: 1 1 55%; /* Text takes remaining space */
+  padding: 40px; /* Generous padding */
+  background-color: #2c3e50; /* Dark background like the header */
+  color: #f8f9fa; /* Light default text color for this section */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center content if less text */
+  border-top-right-radius: 10px; /* Round corners if it's on the right */
+  border-bottom-right-radius: 10px;
+}
+
+.project-details h3 {
+  font-size: 2em; /* Larger project title */
+  font-weight: 700; /* Bolder */
+  color: #ffffff; /* White title */
+  margin-bottom: 20px;
+}
+
+.project-details .project-description {
+  font-size: 1.05em; /* Slightly larger description */
+  color: #bdc3c7; /* Light gray for description, good contrast on dark blue */
+  line-height: 1.8; /* More line height for readability */
+  margin-bottom: 25px;
+  /* flex-grow: 1; Removed for now, let content define height */
+}
+
+.project-technologies {
+  margin-bottom: 30px;
+}
+
+.project-technologies strong {
+  font-size: 1.1em;
+  color: #ffffff; /* White heading for tech list */
+  display: block;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.project-technologies ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.project-technologies li {
+  background-color: #34495e; /* Darker tags that blend with the dark bg but are distinct */
+  color: #ecf0f1; /* Light text on tags */
+  padding: 6px 15px; /* Slightly more padding */
+  border-radius: 20px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  font-weight: 500; /* Make tech tags a bit bolder */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transform */
+  cursor: default; /* So it doesn't look like a link unless it is one */
+}
+
+.project-technologies li:hover {
+  background-color: #4a6278; /* Lighter shade on hover */
+  transform: translateY(-2px); /* Slight lift */
+}
+
+/* Button styling on dark background */
+.project-details .cta-button.project-cta {
+  background-color: #3498db; /* Primary blue */
+  color: white;
+  border: 2px solid #3498db;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  align-self: flex-start; 
+}
+
+.project-details .cta-button.project-cta:hover {
+  background-color: #2980b9; /* Darker blue on hover */
+  border-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+
+/* Responsive adjustments for featured project */
+@media (max-width: 880px) { /* Adjusted breakpoint for a better switch */
+  .project-showcase {
+    flex-direction: column;
+  }
+
+  .project-image-container .project-image,
+  .project-image-container .project-image-placeholder {
+    border-bottom-left-radius: 0; /* Reset for stacked layout */
+    border-top-right-radius: 10px; /* Image now on top, round its top-right */
+  }
+
+  .project-details {
+    border-top-right-radius: 0; /* Reset for stacked layout */
+    border-bottom-left-radius: 10px; /* Details now on bottom, round its bottom-left */
+  }
+}
