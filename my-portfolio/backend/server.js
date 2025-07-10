@@ -4,10 +4,13 @@ const cors = require('cors');
 const db = require('./db'); // ייבוא קובץ החיבור שלנו
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const { authenticateToken } = require('./middleware');
-
-app.use(cors());
+const corsOptions = {
+  origin: 'https://yosef-portfolio.onrender.com', // <-- הדבק כאן את כתובת ה-FRONTEND שלך
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/images', express.static('public/images'));
 
