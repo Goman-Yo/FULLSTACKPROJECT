@@ -1,17 +1,12 @@
 // frontend/src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './LoginPage.css';
-
-// This logic determines which URL to use based on the environment
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,28 +14,26 @@ function LoginPage() {
     setError('');
 
     try {
-      // Use the dynamic BASE_URL to build the request URL
-      const response = await fetch(`${BASE_URL}/api/login`, {
+      const response = await fetch('https://yosef-portfolio-backend.onrender.com/api/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
-
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Something went wrong');
+      
+      console.log('Login successful:', data);
+      alert('Login successful! Redirecting to homepage...');
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
-      }
-
-      // If login is successful
+      // שמירת הטוקן ב-localStorage של הדפדפן
       localStorage.setItem('token', data.token);
+
+      // שמירת פרטי המשתמש (אופציונלי, יכול להיות שימושי)
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Use navigate to go to the homepage instead of a full page reload
-      navigate('/');
-
+      // העברת המשתמש לדף הבית לאחר התחברות
+      window.location.href = '/';
+      
     } catch (err) {
       setError(err.message);
     } finally {
@@ -63,12 +56,9 @@ function LoginPage() {
             <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </div>
           {error && <p className="error-message">{error}</p>}
-          <div className="form-footer">
-            <button type="submit" className="cta-button primary login-button" disabled={isLoading}>
-              {isLoading ? 'Logging in...' : 'Sign In'}
-            </button>
-            <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
-          </div>
+          <button type="submit" className="login-button" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Sign In'}
+          </button>
         </form>
       </div>
     </div>
