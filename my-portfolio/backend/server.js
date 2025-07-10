@@ -1,16 +1,23 @@
-// backend/server.js
 const express = require('express');
 const cors = require('cors');
-const db = require('./db'); // ייבוא קובץ החיבור שלנו
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+require('dotenv').config(); // Load environment variables first
+
+const db = require('./db');
+const { authenticateToken } = require('./middleware');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const { authenticateToken } = require('./middleware');
+
+// --- CORS Configuration ---
 const corsOptions = {
-  origin: 'https://yosef-portfolio.onrender.com', // <-- הדבק כאן את כתובת ה-FRONTEND שלך
+  origin: ['http://localhost:3000', 'https://yosef-portfolio.onrender.com'], // Allow both local and deployed frontend
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+// --- Middleware ---
 app.use(express.json());
 app.use('/images', express.static('public/images'));
 
@@ -184,11 +191,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-require('dotenv').config(); // ודא שזה נמצא בתחילת הקובץ אם לא הוספת קודם
-
-// ... (כל שאר הקוד וה-Endpoints הקיימים)
 
 // --- API ENDPOINT: User Login ---
 app.post('/api/login', async (req, res) => {
@@ -451,5 +453,5 @@ app.put('/api/contact-submissions/:id/reply', authenticateToken, async (req, res
   }
 });
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
