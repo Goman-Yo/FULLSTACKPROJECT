@@ -1,5 +1,7 @@
 // frontend/src/api.js
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'https://yosef-portfolio-backend.onrender.com/api' // <-- Paste your backend URL here
+  : 'http://localhost:5000/api';
 
 export const authenticatedFetch = async (url, options = {}) => {
   const token = localStorage.getItem('token');
