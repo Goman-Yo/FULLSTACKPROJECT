@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 // We can reuse the login page CSS for a similar look
 import './LoginPage.css'; 
-
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 function SignUpPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ function SignUpPage() {
     setSuccess('');
 
     try {
-      const response = await fetch('https://yosef-portfolio-backend.onrender.com/api/login', {
+      const response = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password }),

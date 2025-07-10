@@ -1,7 +1,7 @@
 // frontend/src/pages/LoginPage.js
 import React, { useState } from 'react';
 import './LoginPage.css';
-
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +14,7 @@ function LoginPage() {
     setError('');
 
     try {
-      const response = await fetch('https://yosef-portfolio-backend.onrender.com/api/login', {
+      const response = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
