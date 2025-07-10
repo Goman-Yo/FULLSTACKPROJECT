@@ -18,14 +18,32 @@ function ContactPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // For Phase 1, we'll just log the data or show an alert.
-    // Actual email sending would require backend or a third-party service.
-    alert('Form submitted! (This is a demo - no email was sent).\nData: ' + JSON.stringify(formData));
-    // Optionally, reset form:
-    // setFormData({ name: '', email: '', subject: '', message: '' });
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch('http://localhost:5000/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Something went wrong. Please try again later.');
+    }
+
+    // אם הבקשה הצליחה
+    alert('Thank you for your message! I will get back to you soon.');
+    setFormData({ name: '', email: '', subject: '', message: '' }); // איפוס הטופס
+
+  } catch (error) {
+    console.error('Failed to send message:', error);
+    alert(error.message);
+  }
+};
+
 
   const contactLinks = [
     {

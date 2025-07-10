@@ -113,13 +113,16 @@
   }
   
   .like-button .heart-icon {
-    margin-right: 5px;
-    font-size: 1.3em; /* Make heart bigger */
-    transition: transform 0.2s ease;
+  color: #f0f2f5; /* Default heart color */
+  margin-right: 5px;
+  font-size: 1.3em;
+  transition: transform 0.2s ease, color 0.2s ease; /* הוספנו color למעבר */
   }
+
+  /* זה הכלל העיצובי שצובע את הלב באדום */
   .like-button.liked .heart-icon {
-    color: #e74c3c; /* Red heart when liked */
-    transform: scale(1.1);
+  color: #930f00; /* צבע אדום ללב "לחוץ" */
+  transform: scale(1.1);
   }
   .like-button .like-count {
     font-weight: 500;

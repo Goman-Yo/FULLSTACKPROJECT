@@ -1,112 +1,100 @@
-// src/pages/AboutPage.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { authenticatedFetch } from '../api';
 import './AboutPage.css';
 
 function AboutPage() {
-  const education = {
-    // ... (keep existing education object)
-    degree: "B.Sc. in Computer Science",
-    university: "Tel Hai University",
-    graduation: "Early 2026 (Expected)",
-    highlights: [
-      "Maintained an average grade of 93.",
-      "Received an academic excellence award for the 2023/2024 year.",
-    ]
-  };
+  const [profile, setProfile] = useState(null); // State for the user's main profile info
+  const [education, setEducation] = useState([]);
+  const [experience, setExperience] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const experience = {
-    // ... (keep existing experience object)
-    role: "Data Engineer (AI Team)",
-    company: "CopyLeaks",
-    contributions: [
-      "Actively contributed to the development and refinement of AI models for both text and image-based AI-generated content detection.",
-      "Engineered efficient data pipelines for large-scale data collection, processing, and analysis, crucial for model training and performance.",
-      "Specialized in data tagging, meticulous data analysis, and implementing efficient methods for handling substantial datasets."
-    ]
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [profileData, educationData, experienceData, skillsData] = await Promise.all([
+          authenticatedFetch('/profile'), // Fetch profile data
+          authenticatedFetch('/education'),
+          authenticatedFetch('/experience'),
+          authenticatedFetch('/skills')
+        ]);
 
-  // NEW: Define your skill categories and skills
-  const skillCategories = [
-    {
-      name: "Programming Languages",
-      skills: ["Python", "JavaScript", "Java", "SQL", "C++", "C#", "C"]
-    },
-    {
-      name: "Data & AI",
-      skills: ["Data Engineering", "ETL Processes", "Data Pipelines", "Database Management (SQL & NoSQL)", "Pandas", "Polars", "PyTorch", "AI Model Training & Development", "Data Analysis"]
-    },
-    {
-      name: "Cloud Platforms",
-      skills: ["Google Cloud Platform (GCP)", "Oracle Cloud"]
-    },
-    {
-      name: "Development & Tools",
-      skills: ["Frontend Development (React, HTML, CSS)", "Backend Development", "Git & Version Control", "API Design", "Agile Methodologies"]
-    }
-    // You can add more categories or skills
-  ];
+        setProfile(profileData);
+        setEducation(educationData);
+        setExperience(experienceData);
+        setSkills(skillsData);
+
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const skillCategories = skills.reduce((acc, skill) => {
+  const category = skill.category || 'General';
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(skill);
+  return acc; // This line was missing
+}, {});
+  if (isLoading) return <div className="page-loading">Loading...</div>;
+  if (error) return <div className="page-error">Error: {error}</div>;
 
   return (
     <div className="about-page">
-      {/* Section 1: Personal Introduction (Light Background) - KEEP AS IS */}
+      {/* Section 1: Personal Introduction - NOW DYNAMIC */}
       <section className="about-intro-section page-section">
         <div className="container">
-          <h2>Hello! I'm Yosef Dabous...</h2>
-          <p className="intro-text">
-            A dedicated and high-achieving final-year Computer Science student at Tel Hai University, 
-            expecting to graduate in early 2026 with an average of 93 and an excellence award for 
-            the 2023/2024 academic year. My passion lies at the intersection of data engineering 
-            and artificial intelligence. As a Data Engineer on the AI team at CopyLeaks, I'm 
-            immersed in building and optimizing systems that power cutting-edge AI solutions, 
-            from data pipelines to model development. I thrive on transforming complex data into 
-            actionable intelligence and am driven to contribute to innovative technologies 
-            that make a real impact.
-          </p>
+          {/* Display dynamic headline and sub-headline */}
+          <h2>{profile?.headline || "Your Headline Here"}</h2>
+          <p className="intro-text">{profile?.sub_headline || "Your detailed bio will appear here once you update it in the admin dashboard."}</p>
         </div>
       </section>
 
-      {/* Section 2: Education & Professional Experience (Dark Background) - KEEP AS IS */}
+      {/* Section 2: Education & Professional Experience (dynamic content) */}
       <section className="education-experience-section page-section dark-section">
         <div className="container">
           <div className="ed-ex-grid">
-            <div className="education-card">
-              <h3>Education</h3>
-              <h4>{education.degree}</h4>
-              <p className="university-name">{education.university}</p>
-              <p className="graduation-date">Expected Graduation: {education.graduation}</p>
-              <ul>
-                {education.highlights.map((highlight, index) => (
-                  <li key={index}>{highlight}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="experience-card">
-              <h3>Professional Experience</h3>
-              <h4>{experience.role}</h4>
-              <p className="company-name">{experience.company}</p>
-              <ul>
-                {experience.contributions.map((contribution, index) => (
-                  <li key={index}>{contribution}</li>
-                ))}
-              </ul>
-            </div>
+            {education.length > 0 && education.map(edu => (
+              <div key={edu.id} className="education-card">
+                <h3>Education</h3>
+                <h4>{edu.degree}</h4>
+                <p className="university-name">{edu.institution_name}</p>
+                <p className="graduation-date">Expected Graduation: {edu.expected_graduation_date}</p>
+                <ul><li>{edu.highlights}</li></ul>
+              </div>
+            ))}
+            
+            {experience.length > 0 && experience.map(exp => (
+              <div key={exp.id} className="experience-card">
+                <h3>Professional Experience</h3>
+                <h4>{exp.job_title}</h4>
+                <p className="company-name">{exp.company_name}</p>
+                <ul><li>{exp.description}</li></ul>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Section 3: My Skillset (Light Background) - MODIFIED */}
+      {/* Section 3: My Skillset (dynamic content) */}
       <section className="skillset-section page-section">
         <div className="container">
           <h2>My Skillset</h2>
           <div className="skills-container">
-            {skillCategories.map((category, index) => (
-              <div key={index} className="skill-category">
-                <h3>{category.name}</h3>
+            {Object.entries(skillCategories).map(([category, skillsList]) => (
+              <div key={category} className="skill-category">
+                <h3>{category}</h3>
                 <div className="skills-list">
-                  {category.skills.map((skill, skillIndex) => (
-                    <span key={skillIndex} className="skill-tag">
-                      {skill}
+                  {skillsList.map(skill => (
+                    <span key={skill.id} className="skill-tag">
+                      {skill.name}
                     </span>
                   ))}
                 </div>

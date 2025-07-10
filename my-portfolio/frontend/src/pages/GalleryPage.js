@@ -1,110 +1,6 @@
-// src/pages/GalleryPage.js
-import React, { useState } from 'react';
-import './GalleryPage.css'; // Ensure this CSS file exists and is correctly styled
-
-// STEP 1: REPLACE these placeholder imports with your actual image files
-// from src/assets/images/gallery/
-// Make sure the filenames and paths are 100% correct.
-import personal1Img from '../assets/images/gallery/personal_1.jpg'; // Example placeholder
-import personal2Img from '../assets/images/gallery/personal_2.jpg'; // Example placeholder
-import personal3Img from '../assets/images/gallery/personal_3.jpg'; // Example placeholder
-import personal4Img from '../assets/images/gallery/personal_4.jpg'; // Example placeholder
-import cs1Img from '../assets/images/gallery/cs_related_1.jpg';             // Example placeholder
-import cs2Img from '../assets/images/gallery/cs_related_2.jpg';             // Example placeholder
-import work1Img from '../assets/images/gallery/work_copyleaks_1.jpg';           // Example placeholder
-import work2Img from '../assets/images/gallery/work_copyleaks_2.jpg';           // Example placeholder
-
-// STEP 2: UPDATE this array with your actual image data (src, alt, caption)
-const initialGalleryData = [
-  { 
-    id: 'p1', 
-    src: personal1Img, 
-    alt: "Description of personal image 1", 
-    caption: "with my friends <3", 
-    category: 'personal', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'p2', 
-    src: personal2Img, 
-    alt: "Description of personal image 2", 
-    caption: "As a fire man 🔥 .. ", 
-    category: 'personal', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'p3', 
-    src: personal3Img, 
-    alt: "Description of personal image 3", 
-    caption: "cool", 
-    category: 'personal', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'p4', 
-    src: personal4Img, 
-    alt: "Description of personal image 4", 
-    caption: "Nature", 
-    category: 'personal', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'cs1', 
-    src: cs1Img, 
-    alt: "CS related image 1", 
-    caption: "At Tel-Hai", 
-    category: 'cs', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'cs2', 
-    src: cs2Img, 
-    alt: "CS related image 2", 
-    caption: "Haifa University", 
-    category: 'cs', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'w1', 
-    src: work1Img, 
-    alt: "Work related image 1 (CopyLeaks)", 
-    caption: "At the CopyLeaks office", 
-    category: 'work', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-  { 
-    id: 'w2', 
-    src: work2Img, 
-    alt: "Work related image 2 (CopyLeaks)", 
-    caption: "CopyLeaks <3", 
-    category: 'work', 
-    likes: 0, 
-    comments: [], 
-    showComments: false, 
-    likedByUser: false 
-  },
-];
+// frontend/src/pages/GalleryPage.js
+import React, { useState, useEffect } from 'react';
+import './GalleryPage.css';
 
 // --- GalleryItem Component (Manages its own comment input state) ---
 function GalleryItem({ itemData, onLike, onAddComment, onToggleComments }) {
@@ -117,24 +13,26 @@ function GalleryItem({ itemData, onLike, onAddComment, onToggleComments }) {
       alert("Please enter both your name and comment.");
       return;
     }
+    // קורא לפונקציה מההורה שתשלח את התגובה לשרת
     onAddComment(itemData.id, { name: commenterName.trim(), text: commentText.trim() });
-    setCommenterName(''); 
-    setCommentText('');   
+    setCommenterName('');
+    setCommentText('');
   };
 
   return (
     <div className="gallery-item-card">
       <div className="gallery-image-container">
-        <img src={itemData.src} alt={itemData.alt} className="gallery-image" />
+        {/* בניית כתובת התמונה המלאה שמצביעה לשרת ה-backend */}
+        <img src={`http://localhost:5000/images/gallery/${itemData.image_url}`} alt={itemData.alt || itemData.caption} className="gallery-image" />
       </div>
       {itemData.caption && <p className="gallery-caption">{itemData.caption}</p>}
       
       <div className="gallery-item-interactions">
         <button 
           onClick={() => onLike(itemData.id)} 
-          className={`like-button ${itemData.likedByUser ? 'liked' : ''}`}
+          className={`like-button ${itemData.likedByUser ? 'liked' : ''}`} // likedByUser יעודכן בעתיד
           aria-pressed={itemData.likedByUser}
-          title={itemData.likedByUser ? 'Unlike' : 'Like'}
+          title="Like"
         >
           <span className="heart-icon">{itemData.likedByUser ? '❤️' : '🤍'}</span> 
           <span className="like-count">{itemData.likes}</span>
@@ -174,8 +72,8 @@ function GalleryItem({ itemData, onLike, onAddComment, onToggleComments }) {
           </form>
           <div className="comments-list">
             {itemData.comments.length > 0 ? (
-              itemData.comments.map((comment, index) => (
-                <div key={index} className="comment">
+              itemData.comments.map((comment) => (
+                <div key={comment.id} className="comment">
                   <strong>{comment.name}:</strong>
                   <p>{comment.text}</p>
                 </div>
@@ -190,52 +88,114 @@ function GalleryItem({ itemData, onLike, onAddComment, onToggleComments }) {
   );
 }
 
-// --- GalleryPage Component (Manages the overall gallery state) ---
+// --- GalleryPage Component (Manages the overall gallery state via API calls) ---
 function GalleryPage() {
-  const [galleryItems, setGalleryItems] = useState(initialGalleryData);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleLike = (itemId) => {
-    setGalleryItems(currentItems =>
-      currentItems.map(item => {
-        if (item.id === itemId) {
-          return { 
-            ...item, 
-            likes: item.likedByUser ? item.likes - 1 : item.likes + 1, 
-            likedByUser: !item.likedByUser 
-          };
-        }
-        return item;
-      })
-    );
-  };
+  // Fetch initial data
+  useEffect(() => {
+    const fetchGalleryData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/gallery');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        // מוסיפים לכל פריט את השדה showComments עבור ניהול תצוגה בצד הלקוח
+        const initialItems = data.map(item => ({ ...item, showComments: false }));
+        setGalleryItems(initialItems);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchGalleryData();
+  }, []);
 
-  const handleAddComment = (itemId, newComment) => {
+  const handleLike = async (itemId) => {
+  // נמצא את הפריט הספציפי במערך כדי לדעת אם המשתמש כבר עשה לו לייק
+  const currentItem = galleryItems.find(item => item.id === itemId);
+  if (!currentItem) return;
+
+  const action = currentItem.likedByUser ? 'unlike' : 'like';
+
+  // 1. עדכון אופטימי של הממשק - נותן תגובה מיידית למשתמש
+  setGalleryItems(currentItems =>
+    currentItems.map(item =>
+      item.id === itemId ? { 
+        ...item, 
+        likes: item.likedByUser ? item.likes - 1 : item.likes + 1, 
+        likedByUser: !item.likedByUser 
+      } : item
+    )
+  );
+
+  // 2. שליחת הבקשה לשרת כדי לעדכן את בסיס הנתונים
+  try {
+    const response = await fetch(`http://localhost:5000/api/gallery/${itemId}/like`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ action: action }), // שולחים את הפעולה הרצויה
+    });
+
+    if (!response.ok) {
+      // אם השרת נכשל, נבטל את העדכון האופטימי (נחזיר את המצב לקדמותו)
+      throw new Error('Server failed to update likes');
+    }
+    // אין צורך לעדכן את ה-state שוב, כי כבר עשינו זאת אופטימית.
+
+  } catch (error) {
+    console.error("Error liking image:", error);
+    // במקרה של שגיאה, נחזיר את המצב לקדמותו כדי שה-UI ישקף את המציאות
     setGalleryItems(currentItems =>
-      currentItems.map(item => {
-        if (item.id === itemId) {
-          // Add new comment to the beginning of the array to show newest first
-          return { 
-            ...item, 
-            comments: [newComment, ...item.comments] 
-          };
-        }
-        return item;
-      })
+      currentItems.map(item =>
+        item.id === itemId ? { 
+          ...item, 
+          likes: currentItem.likes, // מחזירים לספירה המקורית
+          likedByUser: currentItem.likedByUser // מחזירים למצב הלייק המקורי
+        } : item
+      )
     );
+    alert('Failed to update like. Please try again.');
+  }
+};
+
+  const handleAddComment = async (itemId, newComment) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/gallery/${itemId}/comment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newComment),
+      });
+      if (!response.ok) throw new Error('Failed to add comment');
+      const addedComment = await response.json();
+
+      // עדכון ה-state בצד הלקוח עם התגובה החדשה שהתקבלה מהשרת
+      setGalleryItems(currentItems =>
+        currentItems.map(item =>
+          item.id === itemId ? { ...item, comments: [addedComment, ...item.comments] } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   const handleToggleComments = (itemId) => {
     setGalleryItems(currentItems =>
-      currentItems.map(item => {
-        if (item.id === itemId) {
-          return { ...item, showComments: !item.showComments };
-        }
-        // Optionally, to close other comment sections when one is opened:
-        // return { ...item, showComments: false };
-        return item; // Keeps other items' comment visibility as is
-      })
+      currentItems.map(item =>
+        item.id === itemId ? { ...item, showComments: !item.showComments } : item
+      )
     );
   };
+
+  if (isLoading) return <div className="page-loading">Loading Gallery...</div>;
+  if (error) return <div className="page-error">Error: {error}</div>;
 
   return (
     <div className="gallery-page page-section">
@@ -243,7 +203,6 @@ function GalleryPage() {
         <h2 className="gallery-page-title">My Gallery</h2>
         <p className="gallery-intro">
           A collection of moments, interests, and things that inspire me.
-          (Likes and comments are for demo purposes and will reset on page refresh.)
         </p>
         <div className="gallery-grid">
           {galleryItems.map(item => (

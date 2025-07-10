@@ -83,5 +83,19 @@
     transform-origin: bottom left;
   }
   
+  .logout-button {
+  background: none;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s, color 0.3s;
+}
+.logout-button:hover {
+  background-color: #ffffff;
+  color: #2c3e50;
+}
   /* Responsive adjustments for header can be added later if needed */
   /* e.g. @media (max-width: 768px) { ... } for a hamburger menu */

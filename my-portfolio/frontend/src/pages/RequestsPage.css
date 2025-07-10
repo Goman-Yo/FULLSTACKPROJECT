@@ -1,0 +1,100 @@
+/* frontend/src/pages/RequestsPage.css */
+.requests-page-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.submissions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.submission-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.submission-header {
+    background: #f8f9fa;
+    padding: 15px;
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 8px 8px 0 0;
+}
+
+.submission-header p {
+    margin: 0;
+    padding: 2px 0;
+}
+
+.submission-body {
+    padding: 20px;
+    white-space: pre-wrap; /* Preserves line breaks in the message */
+    line-height: 1.6;
+}
+
+.submission-footer {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    text-align: right;
+    font-size: 0.85em;
+    color: #555;
+    border-radius: 0 0 8px 8px;
+}
+.submission-card.replied {
+  background-color: #f0f4f8; /* Slightly different color for replied messages */
+  border-left: 5px solid #27ae60;
+}
+
+.submission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.replied-status {
+  background-color: #27ae60;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.submission-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submission-actions .action-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9em;
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 10px;
+  transition: background-color 0.2s;
+}
+
+.action-button.reply {
+  background-color: #3498db;
+  color: white;
+}
+.action-button.reply:hover {
+  background-color: #2980b9;
+}
+
+.action-button.delete {
+  background-color: #e74c3c;
+  color: white;
+}
+.action-button.delete:hover {
+  background-color: #c0392b;
+}
