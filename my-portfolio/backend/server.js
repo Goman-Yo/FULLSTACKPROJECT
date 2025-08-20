@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const cloudinary = require('./cloudinary');
 require('dotenv').config(); // Load environment variables first
 
 const db = require('./db');
@@ -20,6 +22,9 @@ app.use(cors(corsOptions));
 // --- Middleware ---
 app.use(express.json());
 app.use('/images', express.static('public/images'));
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // נתיב בסיסי לבדיקה
 app.get('/', (req, res) => {
@@ -43,10 +48,10 @@ app.get('/api/test-db', async (req, res) => {
 // --- API ENDPOINT: Get all categories ---
 
 // --- API ENDPOINT: Get all skills ---
-app.get('/api/skills', async (req, res) => {
+app.get('/api/skills', authenticateToken, async (req, res) => {
   try {
-    // שולפים את כל הכישורים ומסדרים לפי קטגוריה ואז לפי שם
-    const { rows } = await db.query('SELECT * FROM skills ORDER BY category, name');
+    const userId = req.user.userId;
+    const { rows } = await db.query('SELECT * FROM skills WHERE user_id = $1 ORDER BY category, name', [userId]);
     res.json(rows);
   } catch (err) {
     console.error('Error fetching skills', err.stack);
@@ -149,6 +154,30 @@ app.post('/api/gallery/:id/like', async (req, res) => {
   }
 });
 
+// --- API ENDPOINT: Image Upload ---
+app.post('/api/upload', authenticateToken, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No image file provided.' });
+    }
+
+    // Upload the image buffer to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+        if (error) reject(error);
+        resolve(result);
+      }).end(req.file.buffer);
+    });
+
+    // Send the secure URL back to the client
+    res.json({ imageUrl: result.secure_url });
+
+  } catch (err) {
+    console.error('Image upload error:', err);
+    res.status(500).json({ error: 'Something went wrong during image upload.' });
+  }
+});
+
 // --- API ENDPOINT: Add a comment to an image ---
 app.post('/api/gallery/:id/comment', async (req, res) => {
   const { id: image_id } = req.params;
@@ -191,6 +220,34 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
+app.get('/api/expertise', authenticateToken, async (req, res) => {
+  try {
+    const { rows } = await db.query('SELECT * FROM expertise WHERE user_id = $1 ORDER BY id', [req.user.userId]);
+    res.json(rows);
+  } catch (err) {
+    console.error('Error fetching expertise', err.stack);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+// --- API ENDPOINT: Add a new expertise item for a user ---
+app.post('/api/expertise', authenticateToken, async (req, res) => {
+  const { title, description } = req.body;
+  const userId = req.user.userId;
+
+  if (!title) {
+    return res.status(400).json({ error: 'Title is required' });
+  }
+
+  try {
+    const query = 'INSERT INTO expertise(user_id, title, description) VALUES($1, $2, $3) RETURNING *';
+    const { rows } = await db.query(query, [userId, title, description]);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('Error adding expertise', err.stack);
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+});
 
 // --- API ENDPOINT: User Login ---
 app.post('/api/login', async (req, res) => {
@@ -329,9 +386,56 @@ app.post('/api/projects', authenticateToken, async (req, res) => {
     client.release(); // Release client back to the pool
   }
 });
+app.post('/api/education', authenticateToken, async (req, res) => {
+  const { institutionName, degree, expectedGraduation, highlights } = req.body;
+  const userId = req.user.userId;
+
+  if (!institutionName || !degree) {
+    return res.status(400).json({ error: 'Institution and degree are required.' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO education(user_id, institution_name, degree, expected_graduation_date, highlights) 
+      VALUES($1, $2, $3, $4, $5) 
+      RETURNING *
+    `;
+    const { rows } = await db.query(query, [userId, institutionName, degree, expectedGraduation, highlights]);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('Error adding education record', err.stack);
+    res.status(500).json({ error: 'Something went wrong on the server' });
+  }
+});
+
+// --- API ENDPOINT: Add a new Experience record ---
+app.post('/api/experience', authenticateToken, async (req, res) => {
+  const { jobTitle, companyName, startDate, endDate, description } = req.body;
+  const userId = req.user.userId;
+
+  if (!jobTitle || !companyName) {
+    return res.status(400).json({ error: 'Job title and company name are required.' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO experience(user_id, job_title, company_name, start_date, end_date, description) 
+      VALUES($1, $2, $3, $4, $5, $6) 
+      RETURNING *
+    `;
+    // Use null for dates if they are empty strings
+    const { rows } = await db.query(query, [userId, jobTitle, companyName, startDate || null, endDate || null, description]);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error('Error adding experience record', err.stack);
+    res.status(500).json({ error: 'Something went wrong on the server' });
+  }
+});
+
 // --- API ENDPOINT: Add a new skill ---
 app.post('/api/skills', authenticateToken, async (req, res) => {
   const { name, category } = req.body;
+  const userId = req.user.userId; // Get the user's ID from the token
 
   if (!name || !category) {
     return res.status(400).json({ error: 'Skill name and category are required' });
@@ -339,21 +443,19 @@ app.post('/api/skills', authenticateToken, async (req, res) => {
 
   try {
     const queryText = `
-      INSERT INTO skills(name, category) 
-      VALUES($1, $2) 
+      INSERT INTO skills(name, category, user_id) 
+      VALUES($1, $2, $3) 
       RETURNING *
     `;
-    const { rows } = await db.query(queryText, [name, category]);
+    const { rows } = await db.query(queryText, [name, category, userId]);
     res.status(201).json(rows[0]);
-  } catch (err) {
-    // Check for unique name violation
-    if (err.code === '23505') { 
-        return res.status(409).json({ error: `Skill with name "${name}" already exists.` });
+  } catch (err){         
+      if (err.code === '23505') 
+        return res.status(409).json({ error: `You already have a skill named "${name}".` });
     }
     console.error('Error adding new skill', err.stack);
     res.status(500).json({ error: 'Something went wrong on the server' });
-  }
-});
+  });
 // --- API ENDPOINT: Get the logged-in user's profile ---
 app.get('/api/profile', authenticateToken, async (req, res) => {
   try {
@@ -370,7 +472,8 @@ app.get('/api/profile', authenticateToken, async (req, res) => {
 
 // --- API ENDPOINT: Update the logged-in user's profile ---
 app.put('/api/profile', authenticateToken, async (req, res) => {
-  const { fullName, headline, subHeadline } = req.body;
+  // We now correctly accept profileImageUrl from the request body
+  const { fullName, headline, subHeadline, profileImageUrl } = req.body;
   const userId = req.user.userId;
 
   if (!fullName || !headline || !subHeadline) {
@@ -378,13 +481,20 @@ app.put('/api/profile', authenticateToken, async (req, res) => {
   }
 
   try {
+    // This query now correctly updates the image URL column.
+    // COALESCE is a smart function that uses the new URL if provided,
+    // or keeps the old one if a new image wasn't uploaded.
     const query = `
       UPDATE users 
-      SET full_name = $1, headline = $2, sub_headline = $3 
-      WHERE id = $4 
-      RETURNING id, full_name, email, headline, sub_headline
+      SET 
+        full_name = $1, 
+        headline = $2, 
+        sub_headline = $3, 
+        profile_image_url = COALESCE($4, profile_image_url) 
+      WHERE id = $5 
+      RETURNING id, full_name, email, headline, sub_headline, profile_image_url
     `;
-    const { rows } = await db.query(query, [fullName, headline, subHeadline, userId]);
+    const { rows } = await db.query(query, [fullName, headline, subHeadline, profileImageUrl, userId]);
     res.json(rows[0]);
   } catch (err) {
     console.error('Error updating profile', err.stack);

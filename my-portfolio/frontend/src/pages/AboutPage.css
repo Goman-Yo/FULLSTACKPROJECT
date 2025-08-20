@@ -195,3 +195,40 @@
     transform: translateY(-2px); /* Slight lift */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Enhanced shadow */
   }
+
+  .about-intro-section .container {
+    display: flex;
+    align-items: center; /* Vertically align image and text */
+    gap: 50px; /* Space between image and text */
+  }
+
+  .about-intro-image-wrapper {
+    flex-shrink: 0; /* Prevents the image from shrinking */
+  }
+
+  .about-profile-image {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%; /* This makes the image circular */
+    object-fit: cover; /* Ensures the image fills the circle without distortion */
+    border: 6px solid #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .about-intro-text-wrapper {
+    flex-grow: 1; /* Allows text to take up remaining space */
+  }
+
+  /* Responsive adjustment for smaller screens */
+  @media (max-width: 768px) {
+    .about-intro-section .container {
+      flex-direction: column; /* Stack image and text vertically */
+      text-align: center;
+    }
+
+    .about-profile-image {
+      width: 180px;
+      height: 180px;
+      margin-bottom: 20px;
+    }
+  }

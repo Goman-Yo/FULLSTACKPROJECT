@@ -1,7 +1,7 @@
 // src/pages/ContactPage.js
 import React, { useState } from 'react';
-import './ContactPage.css'; // We'll create this CSS file next
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+import './ContactPage.css';
+const BASE_URL = 'http://localhost:5000';
 function ContactPage() {
   const [formData, setFormData] = useState({
     name: '',
@@ -22,7 +22,7 @@ function ContactPage() {
   e.preventDefault();
 
   try {
-    const response = await fetch(`${BASE_URL}/api/login`, {
+    const response = await fetch(`${BASE_URL}/api/contact`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

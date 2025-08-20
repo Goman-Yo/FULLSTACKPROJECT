@@ -1,9 +1,10 @@
+// frontend/src/pages/AboutPage.js
 import React, { useState, useEffect } from 'react';
 import { authenticatedFetch } from '../api';
 import './AboutPage.css';
 
 function AboutPage() {
-  const [profile, setProfile] = useState(null); // State for the user's main profile info
+  const [profile, setProfile] = useState(null);
   const [education, setEducation] = useState([]);
   const [experience, setExperience] = useState([]);
   const [skills, setSkills] = useState([]);
@@ -14,50 +15,58 @@ function AboutPage() {
     const fetchData = async () => {
       try {
         const [profileData, educationData, experienceData, skillsData] = await Promise.all([
-          authenticatedFetch('/profile'), // Fetch profile data
+          authenticatedFetch('/profile'),
           authenticatedFetch('/education'),
           authenticatedFetch('/experience'),
           authenticatedFetch('/skills')
         ]);
-
         setProfile(profileData);
         setEducation(educationData);
         setExperience(experienceData);
         setSkills(skillsData);
-
       } catch (err) {
         setError(err.message);
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
   const skillCategories = skills.reduce((acc, skill) => {
-  const category = skill.category || 'General';
-  if (!acc[category]) {
-    acc[category] = [];
-  }
-  acc[category].push(skill);
-  return acc; // This line was missing
-}, {});
+    const category = skill.category || 'General';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {});
+
   if (isLoading) return <div className="page-loading">Loading...</div>;
   if (error) return <div className="page-error">Error: {error}</div>;
 
   return (
     <div className="about-page">
-      {/* Section 1: Personal Introduction - NOW DYNAMIC */}
+      {/* Section 1: Personal Introduction */}
       <section className="about-intro-section page-section">
-        <div className="container">
-          {/* Display dynamic headline and sub-headline */}
-          <h2>{profile?.headline || "Your Headline Here"}</h2>
-          <p className="intro-text">{profile?.sub_headline || "Your detailed bio will appear here once you update it in the admin dashboard."}</p>
+        <div className="container about-intro-container">
+          <div className="about-intro-image-wrapper">
+            {profile?.profile_image_url && (
+              <img 
+                src={profile.profile_image_url} 
+                alt={profile.full_name || 'Profile'} 
+                className="about-profile-image" 
+              />
+            )}
+          </div>
+          <div className="about-intro-text-wrapper">
+            <h2>{profile?.headline || "Your Headline Here"}</h2>
+            <p className="intro-text">{profile?.sub_headline || "Your detailed bio will appear here once you update it in the admin dashboard."}</p>
+          </div>
         </div>
       </section>
 
-      {/* Section 2: Education & Professional Experience (dynamic content) */}
+      {/* Section 2: Education & Professional Experience */}
       <section className="education-experience-section page-section dark-section">
         <div className="container">
           <div className="ed-ex-grid">
@@ -83,7 +92,7 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Section 3: My Skillset (dynamic content) */}
+      {/* Section 3: My Skillset */}
       <section className="skillset-section page-section">
         <div className="container">
           <h2>My Skillset</h2>

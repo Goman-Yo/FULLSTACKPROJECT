@@ -39,7 +39,7 @@ function ProjectsPage() {
           {projects.map(project => (
             <div key={project.id} className="project-card">
               <div className="project-card-image-container">
-                <img src={`http://localhost:5000/images/${project.image_url}`} alt={project.title} className="project-card-image" />
+                <img src={project.image_url} alt={project.title} className="project-card-image" />
               </div>
               <div className="project-card-content">
                 <h3>{project.title}</h3>
